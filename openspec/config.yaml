@@ -1,0 +1,41 @@
+# OpenSpec 配置文件
+# 这是 workspec 工作流的全局配置
+
+# 全局上下文
+context:
+  project: toolbox-desktop
+  description: 跨平台桌面工具箱 - 基于 Tauri + Vue 的轻量级桌面工具箱
+  version: "1.0.0"
+  
+# 行为规则
+rules:
+  # 变更命名规则
+  change-naming: kebab-case
+  
+  # 必填字段
+  required-fields:
+    - name
+    - title
+    - description
+    - status
+    - created
+  
+  # 状态流转
+  status-flow:
+    - proposed
+    - approved
+    - in-progress
+    - completed
+    - archived
+  
+  # 提交规范
+  commit-convention: "feat: <change-name>"
+  
+  # 设计审批门禁
+  design-gate: required
+  
+  # 归档规则
+  archive-rules:
+    require-validation: true
+    require-tests: true
+    update-main-spec: true
