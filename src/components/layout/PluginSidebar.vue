@@ -33,10 +33,13 @@ const plugins = ref([
 const selectedPlugin = ref('json-formatter')
 
 // 选择插件
+const emit = defineEmits<{
+  (e: 'select-plugin', pluginId: string): void
+}>()
+
 const selectPlugin = (pluginId: string) => {
   selectedPlugin.value = pluginId
-  // TODO: 通知右侧工作区切换插件
-  console.log('选择插件:', pluginId)
+  emit('select-plugin', pluginId)
 }
 </script>
 
@@ -46,11 +49,11 @@ const selectPlugin = (pluginId: string) => {
     <div class="p-3 border-b border-[var(--color-border)]">
       <h3 class="text-sm font-medium text-[var(--color-secondary)]">插件列表</h3>
     </div>
-    
+
     <!-- 插件列表 -->
     <div class="flex-1 overflow-y-auto">
-      <div 
-        v-for="plugin in plugins" 
+      <div
+        v-for="plugin in plugins"
         :key="plugin.id"
         class="p-3 border-b border-[var(--color-border)] cursor-pointer hover:bg-[var(--color-border)] transition-colors"
         :class="{ 'bg-[var(--color-primary)] text-white': selectedPlugin === plugin.id }"

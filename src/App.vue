@@ -6,18 +6,19 @@ import PluginWorkspace from './components/layout/PluginWorkspace.vue'
 import StatusBar from './components/layout/StatusBar.vue'
 
 const isDark = ref(false)
+const currentPluginId = ref('json-formatter')
 
 // 检测系统主题
 onMounted(() => {
   const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
   isDark.value = mediaQuery.matches
-  
+
   // 监听系统主题变化
   mediaQuery.addEventListener('change', (e) => {
     isDark.value = e.matches
     updateTheme()
   })
-  
+
   // 应用初始主题
   updateTheme()
 })
@@ -36,25 +37,30 @@ const updateTheme = () => {
     document.documentElement.classList.remove('dark')
   }
 }
+
+// 插件切换
+const onSelectPlugin = (pluginId: string) => {
+  currentPluginId.value = pluginId
+}
 </script>
 
 <template>
   <div class="h-screen flex flex-col bg-[var(--color-background)] text-[var(--color-text)]">
     <!-- 标题栏 -->
-    <TitleBar 
-      :is-dark="isDark" 
-      @toggle-theme="toggleTheme" 
+    <TitleBar
+      :is-dark="isDark"
+      @toggle-theme="toggleTheme"
     />
-    
+
     <!-- 主内容区域 -->
     <div class="flex-1 flex overflow-hidden">
       <!-- 左侧插件栏 -->
-      <PluginSidebar />
-      
+      <PluginSidebar @select-plugin="onSelectPlugin" />
+
       <!-- 右侧工作区 -->
-      <PluginWorkspace />
+      <PluginWorkspace :current-plugin-id="currentPluginId" />
     </div>
-    
+
     <!-- 状态栏 -->
     <StatusBar />
   </div>
